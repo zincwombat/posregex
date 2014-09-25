@@ -1,0 +1,46 @@
+
+
+
+Erl Interface to posix regular expressions by klacke@hyber.org
+LICENSE: BSD style, free, use,  molest and rewrite
+
+
+To build, make and sudo make install
+
+
+
+To use:
+
+
+1. Compile your regexp.
+
+
+
+4>  {ok, RE} = posregex:compile(<<"abc.*foo">>, [extended]).
+{ok,#Port<0.101>}
+
+
+Try to match something 
+
+7> posregex:match(RE, <<"abc mre text here foo">>, []).
+ok
+
+
+If it doesn't match 
+
+9> posregex:match(RE, <<"abdc mre text here foo">>, []).
+{error,nomatch}
+
+
+Try to match and find out where the match occured
+
+10> posregex:exec(RE, <<"abc mre text here foo">>, []).  
+{ok,[{0,21}]}
+
+
+Free memory occupied by the compilation (or exit process since
+RE is an erlang port)
+
+11> posregex:free(RE).
+ok 
+
