@@ -9,7 +9,6 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(posregex).
--include("../../dg/include/debug.hrl").
 
 %%% external exports
 -export([
@@ -76,16 +75,11 @@ compile(Pat, Options) when binary(Pat), list(Options) ->
 compile(P, Pat, Options) when binary(Pat), list(Options), is_port(P) ->
     Flags = copt_to_flag(Options,0),
     BC= <<?COMPILE:32, Flags:32, Pat/binary, 0:8>>,
-    ?dbug({options,Options}),
-    ?dbug({flags,Flags}),
-    ?dbug({pattern,Pat}),
-    ?dbug({compile,BC}),
     erlang_port_command(P, <<?COMPILE:32, Flags:32, Pat/binary, 0:8>>),
     receive
 	{Port, ok} ->
 	    {ok, Port};
 	{_Port, Err} ->
-		?dbug({compileError,Err}),
 	    {error, Err}
     end.
 
